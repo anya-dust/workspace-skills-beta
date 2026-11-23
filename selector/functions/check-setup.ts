@@ -1,0 +1,20 @@
+import { currentUser, tools } from '@dust/pod';
+import { z } from 'zod';
+export const schema={description:'Verify the current user’s workspace role',userIdentity:'interactive_workspace_user_required',input:z.object({}),output:z.object({message:z.string()})};
+export default { async fetch(){
+ const id=currentUser()?.sId;
+ const reply=(message:string)=>Response.json({message});
+ if(!id) return reply('Admin role not verified. Ask a workspace admin to run setup.');
+ const r=await tools.call('workspace_management','list_workspace_members',{userIds:[id]});
+ const line=r.text().split('\n').find(v=>v.includes('['+id+']'));
+ if(r.isError || !line) return reply('Admin role not verified. Ask a workspace admin to run setup.');
+ const role=line.match(/\) - ([a-z_]+)(?:,|$)/i)?.[1]?.toLowerCase();
+ if(role!=='admin') return reply(role ? `Your workspace role is ${role}. Ask a workspace admin to continue. Nothing was installed.` : 'Admin role not verified. Nothing was installed.');
+ const existing=await tools.call('workspace_management','search_skills',{query:'FrankAccountMapTemplate'});
+ if(existing.isError) return reply('Admin verified. The existing-skill check failed. Retry before creating a skill.');
+ if(/FrankAccountMapTemplate \[skl_/.test(existing.text())) return reply('The account-map skill already exists in this workspace. No duplicate was created.');
+ const revision='__CATALOG_COMMIT__';
+ if(!/^[0-9a-f]{40}$/.test(revision))return reply('Admin verified. This selector needs a pinned catalog revision before it can start setup.');
+ const next=await tools.call('pod_manager','create_conversation',{title:'Set up Frank’s account map',agentName:'dust',message:`I selected Frank’s account map from https://github.com/anya-dust/workspace-skills-beta/tree/${revision}. In this Pod, verify my admin role and required people-search connection, guide me to connect any missing tools, and propose the workspace-local skill for review following the catalog setup contract. Do not install without review or create a duplicate.`});
+ return reply(next.isError?'Could not confirm setup started. Check Pod conversations before retrying.':'Open “Set up Frank’s account map” in this Pod to check connections and review the skill. Nothing is installed until an editor accepts.');
+}};

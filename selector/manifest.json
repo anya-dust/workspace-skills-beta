@@ -1,0 +1,1 @@
+{"version":1,"description":"Choose a pilot skill and check who can set it up in this workspace.","functions":[{"name":"check-setup","description":"Check the caller’s workspace role before setup.","entryPoint":"functions/check-setup.ts","executionMode":"durable"}]}

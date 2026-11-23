@@ -1,0 +1,104 @@
+{
+  "name": "account-map-kit",
+  "version": "1.0.0",
+  "generated": "2026-08-25",
+  "description": "Portable install bundle for the Account Map pod app (Frame + pod functions + SQLite schema).",
+  "placeholders": {
+    "__POD_ID__": {
+      "where": [
+        "src/AccountMap.tsx",
+        "src/functions/send-agent-task.ts"
+      ],
+      "value": "target Pod id, e.g. vlt_abc123"
+    },
+    "__WORKSPACE_ID__": {
+      "where": [
+        "src/functions/send-agent-task.ts"
+      ],
+      "value": "target workspace id"
+    }
+  },
+  "install": {
+    "destination": "pod-<POD_ID>/AccountMap/",
+    "database": {
+      "name": "accountmap",
+      "schemaFile": "databases/accountmap.db.ts",
+      "tool": "sandbox_functions__db_reconcile"
+    },
+    "frame": {
+      "source": "AccountMap.tsx",
+      "mimeType": "application/vnd.dust.frame",
+      "pinAsPodTab": true
+    },
+    "functions": {
+      "slugPrefix": "accountmap__",
+      "fast": [
+        "create-map",
+        "delete-contact",
+        "delete-edge",
+        "delete-note",
+        "delete-role",
+        "dismiss-blind-spot",
+        "get-map",
+        "import-map",
+        "move-items",
+        "next-best-actions",
+        "resolve-blind-spot",
+        "save-contact",
+        "save-edge",
+        "save-note",
+        "save-role",
+        "scan-blind-spots",
+        "update-action",
+        "update-map"
+      ],
+      "durable": [
+        "send-agent-task"
+      ],
+      "note": "send-agent-task is durable because it uses the authenticated Pod conversation tool to open a Dust conversation. Everything else is a fast function."
+    }
+  },
+  "files": [
+    "CHECKLIST.md",
+    "DESIGN.md",
+    "INSTALL.md",
+    "MANIFEST.json",
+    "README.md",
+    "SKILL.md",
+    "src/AccountMap.tsx",
+    "src/databases/accountmap.db.ts",
+    "src/functions/create-map.ts",
+    "src/functions/delete-contact.ts",
+    "src/functions/delete-edge.ts",
+    "src/functions/delete-note.ts",
+    "src/functions/delete-role.ts",
+    "src/functions/dismiss-blind-spot.ts",
+    "src/functions/get-map.ts",
+    "src/functions/import-map.ts",
+    "src/functions/lib/actions.ts",
+    "src/functions/lib/gaps.ts",
+    "src/functions/lib/store.ts",
+    "src/functions/lib/synth.ts",
+    "src/functions/move-items.ts",
+    "src/functions/next-best-actions.ts",
+    "src/functions/resolve-blind-spot.ts",
+    "src/functions/save-contact.ts",
+    "src/functions/save-edge.ts",
+    "src/functions/save-note.ts",
+    "src/functions/save-role.ts",
+    "src/functions/scan-blind-spots.ts",
+    "src/functions/send-agent-task.ts",
+    "src/functions/update-action.ts",
+    "src/functions/update-map.ts",
+    "src/ui/ActionQueue.tsx",
+    "src/ui/BlindSpotCard.tsx",
+    "src/ui/ContactCard.tsx",
+    "src/ui/CoveragePanel.tsx",
+    "src/ui/FilterMenu.tsx",
+    "src/ui/SettingsModal.tsx",
+    "src/ui/StickyNote.tsx",
+    "src/ui/dialogs.tsx",
+    "src/ui/types.ts",
+    "src/ui/usage.tsx"
+  ]
+}

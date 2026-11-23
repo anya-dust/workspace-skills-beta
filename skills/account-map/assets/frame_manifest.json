@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "name": "Account Map",
+  "description": "Org-chart canvas for account planning, backed by a Frame database and server functions.",
+  "uiEntryPoint": "AccountMap.tsx",
+  "databases": [
+    {
+      "name": "accountmap",
+      "schema": "databases/accountmap.db.ts"
+    }
+  ],
+  "functions": [
+    {
+      "name": "create-map",
+      "description": "Create a new account map and return its snapshot.",
+      "entryPoint": "functions/create-map.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "delete-contact",
+      "description": "Delete a contact from an account map, along with any edges attached to it.",
+      "entryPoint": "functions/delete-contact.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "delete-edge",
+      "description": "Delete an edge between two contacts.",
+      "entryPoint": "functions/delete-edge.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "delete-note",
+      "description": "Delete a sticky note from an account map.",
+      "entryPoint": "functions/delete-note.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "delete-role",
+      "description": "Delete a deal role. Contacts assigned to it fall back to 'No Role Assigned'. Returns the full roles list.",
+      "entryPoint": "functions/delete-role.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "dismiss-blind-spot",
+      "description": "Dismiss a blind spot, or restore a dismissed one. A dismissed spot stays out of the map and is not revived by a later scan.",
+      "entryPoint": "functions/dismiss-blind-spot.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "get-map",
+      "description": "Return the full snapshot of an account map (maps list, roles, contacts, edges, sticky notes). Omit mapId for the first active map.",
+      "entryPoint": "functions/get-map.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "import-map",
+      "description": "Create a map from imported data (JSON export, CSV rows, or agent-built org data). Contacts use a client-side 'ref' key to wire edges. Role is matched by roleName (case-insensitive). Set mapId to import into an existing map instead of creating one.",
+      "entryPoint": "functions/import-map.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "move-items",
+      "description": "Batch-save canvas positions for contacts, sticky notes and blind-spot ghost cards after dragging.",
+      "entryPoint": "functions/move-items.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "next-best-actions",
+      "description": "Return the ranked next-best-action queue for an account map: warm introductions into blind spots, relationships going cold, untouched committee seats, expansion signals, renewal exposure and map hygiene. Each action carries the agent prompt that would do ",
+      "entryPoint": "functions/next-best-actions.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "resolve-blind-spot",
+      "description": "Promote a blind spot's suggested person into a real contact on the map, at the ghost card's position, wired to its anchor contact when it has one. Marks the blind spot resolved and returns the refreshed snapshot.",
+      "entryPoint": "functions/resolve-blind-spot.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "save-contact",
+      "description": "Create or update a contact card on an account map. Pass id to update; omit to create.",
+      "entryPoint": "functions/save-contact.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "save-edge",
+      "description": "Create a reporting ('default') or 'influence' edge between two contacts on a map. Duplicate source/target pairs are reused.",
+      "entryPoint": "functions/save-edge.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "save-note",
+      "description": "Create or update a sticky note on an account map. Pass id to update; omit to create.",
+      "entryPoint": "functions/save-note.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "save-role",
+      "description": "Create or update a deal role (name + color). Returns the full roles list.",
+      "entryPoint": "functions/save-role.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "scan-blind-spots",
+      "description": "Scan an account map for blind spots: buying-committee seats nobody fills, company functions with no contact, leaders whose org is unmapped, and relationships that have gone quiet. Ghost cards get a suggested person and a warm introduction path. Re-running",
+      "entryPoint": "functions/scan-blind-spots.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "send-agent-task",
+      "description": "Start a Dust agent task in a new account-map conversation, optionally scoped to one contact.",
+      "entryPoint": "functions/send-agent-task.ts",
+      "executionMode": "durable",
+      "defaultStake": "low"
+    },
+    {
+      "name": "update-action",
+      "description": "Mark a next-best-action as done, snoozed, or open again, and optionally record the agent conversation opened for it. Upserts on the action key, so repeating the call is safe.",
+      "entryPoint": "functions/update-action.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    },
+    {
+      "name": "update-map",
+      "description": "Rename, trash, restore, or permanently destroy an account map. Returns the updated maps list.",
+      "entryPoint": "functions/update-map.ts",
+      "executionMode": "fast",
+      "defaultStake": "never_ask"
+    }
+  ]
+}
